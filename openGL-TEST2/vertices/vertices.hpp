@@ -6,8 +6,8 @@
 //  Copyright © 2019 Lax Zhang. All rights reserved.
 //
 
-#ifndef vertices_cube_h
-#define vertices_cube_h
+#ifndef vertices_h
+#define vertices_h
 
 float floorVertices[] = {
     // Positions            // Normals        // Texture Coords

@@ -18,7 +18,7 @@
 #include "header/texture/texture.hpp"
 #include "header/shader/shader.hpp"
 #include "header/camera/camera.hpp"
-#include "vertices/vertices_cube.hpp"
+#include "vertices/vertices.hpp"
 #include "header/sphere/sphere.hpp"
 
 using namespace std;
@@ -159,26 +159,23 @@ int main(int argc, const char * argv[]) {
 }
 
 void processShadowInLoop(Shader &shader, glm::mat4 lightSpaceMatrix){
-    // 1. 渲染深度贴图
+    // 渲染深度贴图
     shader.use();
     shader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
     glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
     glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
     glClear(GL_DEPTH_BUFFER_BIT);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, floorTextureID);
     renderScene(shader);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void processObjectInLoop(Shader &shader, glm::mat4 lightSpaceMatrix){
-    // 2. 生成阴影贴图
+    // 生成阴影贴图
     shader.use();
     glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) window_width / (float) window_height, 0.1f, 100.0f);
     glm::mat4 view = camera.getViewMatrix();
     shader.setMat4("projection", projection);
     shader.setMat4("view", view);
-    
     shader.setVec3("lightColor", glm::vec3(1.0f));
     shader.setVec3("viewPos", camera.camPos);
     shader.setVec3("lightPos", lightPos);
@@ -457,12 +454,12 @@ void calculateInLoop(){
         initial_time += 1;
     }
     
-    // 6.4 光源日出日落位移
+    // 光源日出日落位移
     lightPos.x = sin((float)glfwGetTime()) * 3.0f;
     lightPos.z = sin((float)glfwGetTime()) * 3.0f;
     lightPos.y = (abs(cos(glfwGetTime()))+1.0) * 3.0f;
     
-    // 6.5 光空间变换矩阵
+    // 光空间变换矩阵
     glm::mat4 lightProjection, lightView;
     GLfloat near_plane = 1.0f, far_plane = 20.5f;
     lightProjection = glm::ortho(-15.0f, 15.0f, -15.0f, 15.0f, near_plane, far_plane);
