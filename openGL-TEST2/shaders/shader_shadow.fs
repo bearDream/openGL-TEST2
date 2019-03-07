@@ -54,7 +54,8 @@ void main(){
     vec3 specular = spec * lightColor;
     
     // 计算阴影
-    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+//    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    float bias = 0.005;
     float shadow = ShadowCalculation(fs_in.FragPosLightSpace, bias);
     vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular))*color;
     
